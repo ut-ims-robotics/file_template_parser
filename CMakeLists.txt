@@ -1,0 +1,40 @@
+cmake_minimum_required(VERSION 2.8.3)
+project(file_template_parser)
+
+## Compile as C++11, supported in ROS Kinetic and newer
+add_compile_options(-std=c++11)
+
+find_package(catkin REQUIRED COMPONENTS
+  cmake_modules
+  roscpp
+  std_msgs
+)
+
+find_package(TinyXML REQUIRED)
+
+
+catkin_package(
+#  INCLUDE_DIRS include
+#  LIBRARIES file_template_parser
+#  CATKIN_DEPENDS roscpp std_msgs
+ DEPENDS TinyXML
+)
+
+include_directories(
+  include
+  ${catkin_INCLUDE_DIRS}
+  ${TinyXML_INCLUDE_DIRS}
+)
+
+# Create file template parser library
+add_library(ft_parser STATIC 
+              src/template_import.cpp
+              src/template_container.cpp
+)
+add_dependencies(ft_parser ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
+target_link_libraries(ft_parser ${catkin_LIBRARIES} ${TinyXML_LIBRARIES})
+
+
+#add_executable(test_1 src/.cpp)
+#add_dependencies(broken_node_1 ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
+#target_link_libraries(broken_node_1 ${catkin_LIBRARIES} )

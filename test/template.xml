@@ -1,0 +1,6 @@
+<arg name="adjective" default="a1_arg">
+<arg name="noun" default="a2_arg">
+
+<body>
+  Strange $(arg adjective) $(arg noun) was seen. The $(arg noun) was peaceful.
+</body>
