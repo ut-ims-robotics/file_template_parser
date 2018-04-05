@@ -9,6 +9,9 @@ typedef std::map<std::string, std::string> Argmap;
 namespace tp
 {
 
+/**
+ * @brief The TemplateContainer class
+ */
 class TemplateContainer
 {
 public:
@@ -18,7 +21,7 @@ public:
    * @param arguments
    * @param body
    */
-  TemplateContainer(Argmap arguments, std::string body);
+  TemplateContainer(Argmap arguments, std::string body, std::string extension);
 
   /**
    * @brief setArgument
@@ -40,9 +43,27 @@ public:
    */
   std::string processTemplate() const;
 
+  /**
+   * @brief getArgmap
+   * @return
+   */
+  Argmap getArgmap() const;
+
+  /**
+   * @brief getExtension
+   * @return
+   */
+  std::string getExtension() const;
+
+  /**
+   * @brief printArguments
+   */
+  void printArguments() const;
+
 private:
   Argmap arguments_;
   std::string body_;
+  std::string extension_;
   std::map<std::string, TemplateContainer> sub_containers_;
 };
 

@@ -34,7 +34,7 @@ add_library(ft_parser STATIC
 add_dependencies(ft_parser ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
 target_link_libraries(ft_parser ${catkin_LIBRARIES} ${TinyXML_LIBRARIES})
 
-
-#add_executable(test_1 src/.cpp)
-#add_dependencies(broken_node_1 ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
-#target_link_libraries(broken_node_1 ${catkin_LIBRARIES} )
+# Create a testing node
+add_executable(template_import_test src/template_import_test.cpp)
+add_dependencies(template_import_test ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
+target_link_libraries(template_import_test ft_parser ${catkin_LIBRARIES} )

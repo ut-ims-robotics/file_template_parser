@@ -1,6 +1,7 @@
 #include "file_template_parser/template_import.h"
 #include <boost/filesystem/operations.hpp>
 #include <stdexcept>
+#include <fstream>
 
 namespace tp
 {
@@ -32,7 +33,7 @@ Argmap getArguments(TiXmlElement* root_element)
   Argmap arguments;
 
   // Iterate through all arguments
-  for (TiXmlElement* arg_element = root_element;
+  for (TiXmlElement* arg_element = root_element->FirstChildElement("arg");
                      arg_element != NULL;
                      arg_element = arg_element->NextSiblingElement("arg"))
   {
@@ -57,22 +58,23 @@ Argmap getArguments(TiXmlElement* root_element)
  */
 std::string getBody(TiXmlElement* root_element)
 {
-  TiXmlNode* body_node = root_element->NextSibling("body");
+  TiXmlElement* body_element = root_element->FirstChildElement("body");
 
   // Check the body element
-  if(body_node == NULL)
+  if(body_element == NULL)
   {
     throw std::runtime_error("The file template does not contain a body element");
   }
 
-  std::string body = body_node->ToText()->Value();
+  const char* body = body_element->GetText();
 
-  if (body.empty())
+  // Check the text
+  if (body == NULL)
   {
-    throw std::runtime_error("The body element does not contain body text");
+    throw std::runtime_error("The text in the 'body' is compromised");
   }
 
-  return body;
+  return std::string(body);
 }
 
 // Import file template
@@ -84,19 +86,22 @@ TemplateContainer importFileTemplate(std::string file_path)
   try
   {
     // Open the template file
-    if(template_xml.LoadFile(file_path))
+    if(!template_xml.LoadFile(file_path))
     {
       throw std::runtime_error("Cannot open the file template");
     }
 
     // Get the root element
-    TiXmlElement* root_element = template_xml.FirstChildElement();
+    TiXmlElement* root_element = template_xml.FirstChildElement("f_template");
 
     // Check if any element was received
     if( root_element == NULL )
     {
-      throw std::runtime_error("No xml elements");
+      throw std::runtime_error("Missing 'f_template' element");
     }
+
+    // Get the output file extension hint
+    std::string extension = getAttribute("extension", root_element);
 
     // Get template arguments
     Argmap arguments = getArguments(root_element);
@@ -104,14 +109,29 @@ TemplateContainer importFileTemplate(std::string file_path)
     // Get template body
     std::string body = getBody(root_element);
 
-    return TemplateContainer(arguments, body);
+    return TemplateContainer(arguments, body, extension);
   }
+  catch(std::runtime_error e)
+  {
+    throw std::runtime_error(std::string(e.what()) + ": in '" + file_path + "'");
+  }
+
   catch(std::exception e)
   {
     throw std::runtime_error(std::string(e.what()) + ": in '" + file_path + "'");
   }
 
   template_xml.Clear();
+}
+
+// Process and save the template
+void processAndSaveTemplate(const TemplateContainer& f_template,
+                            std::string base_path,
+                            std::string name)
+{
+  std::ofstream file_out(base_path + "/" + name + f_template.getExtension());
+  file_out << f_template.processTemplate();
+  file_out.close();
 }
 
 } // tp namespace
