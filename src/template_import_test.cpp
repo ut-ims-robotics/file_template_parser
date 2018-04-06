@@ -16,7 +16,10 @@ int main(int argc, char **argv)
 
   try
   {
-    std::string base_path = "/home/robert/catkin_ws/src/file_template_parser/test/";
+    /*
+     * Get the test folder path
+     */
+    std::string base_path = ros::package::getPath(ROS_PACKAGE_NAME) + "/test/";
 
     /*
      * Import the templates
@@ -28,7 +31,7 @@ int main(int argc, char **argv)
     /*
      * Print out the arguments
      */
-    // t_random.printArguments();
+    t_random.printArguments();
 
     /*
      * Print out the body

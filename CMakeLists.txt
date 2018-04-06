@@ -6,6 +6,7 @@ add_compile_options(-std=c++11)
 
 find_package(catkin REQUIRED COMPONENTS
   cmake_modules
+  roslib
   roscpp
   std_msgs
 )
