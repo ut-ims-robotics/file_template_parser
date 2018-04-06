@@ -18,6 +18,11 @@ public:
 
   /**
    * @brief TemplateContainer
+   * @param path
+   */
+  TemplateContainer(std::string file_path);
+  /**
+   * @brief TemplateContainer
    * @param arguments
    * @param body
    */
@@ -42,6 +47,12 @@ public:
    * @return
    */
   std::string processTemplate() const;
+
+  /**
+   * @brief processAndSaveTemplate
+   * @param base_path
+   */
+  void processAndSaveTemplate(std::string base_path, std::string name) const;
 
   /**
    * @brief getArgmap

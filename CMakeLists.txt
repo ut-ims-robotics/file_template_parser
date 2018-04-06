@@ -28,8 +28,8 @@ include_directories(
 
 # Create file template parser library
 add_library(ft_parser STATIC 
-              src/template_import.cpp
-              src/template_container.cpp
+  src/template_container.cpp
+  src/template_management_tools.cpp
 )
 add_dependencies(ft_parser ${catkin_EXPORTED_TARGETS} ${${PROJECT_NAME}_EXPORTED_TARGETS})
 target_link_libraries(ft_parser ${catkin_LIBRARIES} ${TinyXML_LIBRARIES})

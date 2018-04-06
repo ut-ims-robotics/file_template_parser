@@ -9,7 +9,6 @@
 #include "file_template_parser/file_template_parser.h"
 #include <stdexcept>
 
-// main
 int main(int argc, char **argv)
 {
   ros::init(argc, argv, "template_import_test");
@@ -19,23 +18,38 @@ int main(int argc, char **argv)
   {
     std::string base_path = "/home/robert/catkin_ws/src/file_template_parser/test/";
 
-    tp::TemplateContainer f_template = tp::importFileTemplate(base_path + "template.xml");
+    /*
+     * Import the templates
+     */
+    tp::TemplateContainer t_random(base_path + "templates/template.xml");
+    tp::TemplateContainer t_cmakelists(base_path + "templates/temoto_ai_cmakelists.xml");
+    tp::TemplateContainer t_packagexml(base_path + "templates/temoto_ai_packagexml.xml");
 
-    // Print out the arguments
-    f_template.printArguments();
+    /*
+     * Print out the arguments
+     */
+    // t_random.printArguments();
 
-    // Print out the body
-    std::cout << f_template.processTemplate() << std::endl;
+    /*
+     * Print out the body
+     */
+    // std::cout << t_random.processTemplate() << std::endl;
 
-    // Set the arguments
-    f_template.setArgument("noun", "dog");
-    f_template.setArgument("adjective", "blue");
-    f_template.setArgument("ai_name", "start");
+    /*
+     * Set the arguments
+     */
+    t_random.setArgument("noun", "dog");
+    t_random.setArgument("adjective", "blue");
+    t_random.setArgument("ai_name", "start");
+    t_cmakelists.setArgument("ai_name", "ai_name_test");
+    t_packagexml.setArgument("ai_name", "ai_name_test");
 
-    std::cout << f_template.processTemplate() << std::endl;
-
-    // Save the processed template
-    tp::processAndSaveTemplate(f_template, base_path, "template_output");
+    /*
+     * Save the processed template
+     */
+    t_random.processAndSaveTemplate(base_path, "template_output");
+    t_cmakelists.processAndSaveTemplate(base_path, "CmakeLists");
+    t_packagexml.processAndSaveTemplate(base_path, "package");
   }
   catch(std::runtime_error e)
   {
