@@ -18,6 +18,11 @@ public:
 
   /**
    * @brief TemplateContainer
+   */
+  TemplateContainer();
+
+  /**
+   * @brief TemplateContainer
    * @param path
    */
   TemplateContainer(std::string file_path);

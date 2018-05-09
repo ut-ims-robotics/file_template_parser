@@ -89,6 +89,10 @@ std::string getBody(TiXmlElement* root_element)
  * Template container class
  */
 
+// Default constructor
+TemplateContainer::TemplateContainer()
+{}
+
 // Constructs the template object from the given template file
 TemplateContainer::TemplateContainer(std::string file_path)
 {
@@ -114,8 +118,22 @@ TemplateContainer::TemplateContainer(std::string file_path)
     // Get the output file extension hint
     extension_ = getAttribute("extension", root_element);
 
-    // Get template arguments
-    arguments_ = getArguments(root_element);
+    // Check if the args is false
+    std::string args_attr;
+    try
+    {
+      args_attr = getAttribute("args", root_element);
+    }
+    catch(std::runtime_error e)
+    {
+      // Do nothing about it, args attribute is not mandatory ... yet
+    }
+
+    if (args_attr != "false")
+    {
+      // Get template arguments
+      arguments_ = getArguments(root_element);
+    }
 
     // Get template body
     body_ = getBody(root_element);
