@@ -13,12 +13,11 @@ find_package(catkin REQUIRED COMPONENTS
 
 find_package(TinyXML REQUIRED)
 
-
 catkin_package(
   INCLUDE_DIRS include
 #  LIBRARIES file_template_parser
 #  CATKIN_DEPENDS roscpp std_msgs
- DEPENDS TinyXML
+  DEPENDS TinyXML
 )
 
 include_directories(
