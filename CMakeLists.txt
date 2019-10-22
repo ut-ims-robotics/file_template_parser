@@ -16,7 +16,7 @@ find_package(TinyXML REQUIRED)
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES ft_parser
-#  CATKIN_DEPENDS roscpp std_msgs
+  CATKIN_DEPENDS roscpp std_msgs roslib cmake_modules
   DEPENDS TinyXML
 )
 
